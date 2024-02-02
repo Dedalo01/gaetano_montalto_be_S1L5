@@ -33,6 +33,11 @@
                     Console.ResetColor();
                 }
 
+                catch (OverflowException)
+                {
+
+                }
+
                 switch (selectedOption)
                 {
                     case 1:
