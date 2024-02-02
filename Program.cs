@@ -47,13 +47,13 @@
                             Console.Write("Inserisci cognome: ");
                             string surname = Console.ReadLine();
 
-                            Console.Write("Inserisci giorno di nascita: ");
+                            Console.Write("Inserisci giorno di nascita (gg): ");
                             byte day = byte.Parse(Console.ReadLine());
 
-                            Console.Write("Inserisci mese di nascita: ");
+                            Console.Write("Inserisci mese di nascita (mm): ");
                             byte month = byte.Parse(Console.ReadLine());
 
-                            Console.Write("Inserisci anno di nascita: ");
+                            Console.Write("Inserisci anno di nascita (aaaa): ");
                             int year = int.Parse(Console.ReadLine());
 
                             DateTime birthday = new DateTime(year, month, day);
@@ -61,7 +61,7 @@
                             Console.Write("Inserisci codice fiscale (16 caratteri): ");
                             string fiscalCode = Console.ReadLine();
 
-                            Console.Write("Inserisci sesso: ");
+                            Console.Write("Inserisci sesso (M o F): ");
                             char sex = char.Parse(Console.ReadLine().ToUpper());
 
                             Console.Write("Inserisci città di residenza: ");
@@ -82,7 +82,7 @@
                             Console.WriteLine("Errore: " + ex.Message);
                         }
 
-                        catch (FormatException ex)
+                        catch (FormatException)
                         {
                             Console.WriteLine();
                             Console.BackgroundColor = ConsoleColor.Red;
