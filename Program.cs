@@ -136,7 +136,7 @@
                 get { return _fiscalCode; }
                 set
                 {
-                    if (value.Length == 0 || value.Length > 16) throw new ArgumentException("Fiscal Code must have 16 characters.");
+                    if (value.Length == 0 || !(value.Length == 16)) throw new ArgumentException("Fiscal Code must have 16 characters.");
                     _fiscalCode = value.ToUpper();
                 }
             }
@@ -226,7 +226,7 @@
                 Console.WriteLine($"nato il {_birthday.ToShortDateString()} ({Sex}),");
                 Console.WriteLine($"residente in {CityOfResidence},");
                 Console.WriteLine($"codice fiscale: {FiscalCode}");
-                Console.WriteLine($"Reddito dichiarato: {AnnualIncome:C}");
+                Console.WriteLine($"Reddito dichiarato: {_annualIncome:C}");
                 Console.WriteLine($"IMPOSTA DA VERSARE: {_taxToBePaid:C}");
                 Console.WriteLine();
                 Console.WriteLine("/==========================================\\");
