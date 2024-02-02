@@ -9,7 +9,9 @@
 
             do
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(HEADING);
+                Console.ResetColor();
                 Console.WriteLine();
 
                 Console.WriteLine("Benvenuto,");
@@ -18,57 +20,91 @@
                 Console.WriteLine();
                 Console.Write("Inserisci 1 o 2 per proseguire: ");
 
-                byte selectedOption = byte.Parse(Console.ReadLine());
+                byte selectedOption = 0;
+                try
+                {
+                    selectedOption = byte.Parse(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("Errore: ");
+                    Console.ResetColor();
+                }
+
                 switch (selectedOption)
                 {
-
                     case 1:
-
                         Console.WriteLine("Immetti i dati qui sotto per calcolare le tue imposte");
-                        Console.WriteLine();
-
-                        Console.Write("Inserisci nome: ");
-                        string? name = Console.ReadLine();
-
-                        Console.Write("Inserisci cognome: ");
-                        string surname = Console.ReadLine();
-
-                        Console.Write("Inserisci giorno di nascita: ");
-                        byte day = byte.Parse(Console.ReadLine());
-
-                        Console.Write("Inserisci mese di nascita: ");
-                        byte month = byte.Parse(Console.ReadLine());
-
-                        Console.Write("Inserisci anno di nascita: ");
-                        int year = int.Parse(Console.ReadLine());
-
-                        DateTime birthday = new DateTime(year, month, day);
-
-                        Console.Write("Inserisci codice fiscale (16 caratteri): ");
-                        string fiscalCode = Console.ReadLine();
-
-                        Console.Write("Inserisci sesso: ");
-                        char sex = char.Parse(Console.ReadLine().ToUpper());
-
-                        Console.Write("Inserisci città di residenza: ");
-                        string cityOfResidence = Console.ReadLine();
-
-                        Console.Write("Inserisci importo annuo: ");
-                        double annualIncome = double.Parse(Console.ReadLine());
                         Console.WriteLine();
 
                         try
                         {
+                            Console.Write("Inserisci nome: ");
+                            string name = Console.ReadLine();
+
+                            Console.Write("Inserisci cognome: ");
+                            string surname = Console.ReadLine();
+
+                            Console.Write("Inserisci giorno di nascita: ");
+                            byte day = byte.Parse(Console.ReadLine());
+
+                            Console.Write("Inserisci mese di nascita: ");
+                            byte month = byte.Parse(Console.ReadLine());
+
+                            Console.Write("Inserisci anno di nascita: ");
+                            int year = int.Parse(Console.ReadLine());
+
+                            DateTime birthday = new DateTime(year, month, day);
+
+                            Console.Write("Inserisci codice fiscale (16 caratteri): ");
+                            string fiscalCode = Console.ReadLine();
+
+                            Console.Write("Inserisci sesso: ");
+                            char sex = char.Parse(Console.ReadLine().ToUpper());
+
+                            Console.Write("Inserisci città di residenza: ");
+                            string cityOfResidence = Console.ReadLine();
+
+                            Console.Write("Inserisci importo annuo: ");
+                            double annualIncome = double.Parse(Console.ReadLine());
+                            Console.WriteLine();
                             Contribuente user = new Contribuente(name, surname, birthday, fiscalCode, sex, cityOfResidence, annualIncome);
                             user.DisplayReport();
                         }
+
+                        catch (ArgumentOutOfRangeException ex)
+                        {
+                            Console.WriteLine();
+                            Console.BackgroundColor = ConsoleColor.Red;
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("Errore: " + ex.Message);
+                        }
+
+                        catch (FormatException ex)
+                        {
+                            Console.WriteLine();
+                            Console.BackgroundColor = ConsoleColor.Red;
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("Errore: Qualcosa è andato storto.");
+
+                        }
                         catch (ArgumentException ex)
                         {
+                            Console.WriteLine();
+                            Console.BackgroundColor = ConsoleColor.Red;
+                            Console.ForegroundColor = ConsoleColor.White;
                             Console.WriteLine($"Errore: {ex.Message}");
+
                         }
                         catch
                         {
+                            Console.WriteLine();
+                            Console.BackgroundColor = ConsoleColor.Red;
+                            Console.ForegroundColor = ConsoleColor.White;
                             Console.WriteLine("Errore: Non puoi lasciare campi vuoti.");
+
                         }
                         break;
 
@@ -80,11 +116,15 @@
                         return;
 
                     default:
+                        Console.WriteLine();
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("Opzione non valida, inserisci 1 o 2.");
+
                         break;
                 }
 
-
+                Console.ResetColor();
                 Console.WriteLine();
                 Console.Write("Prema qualunque tasto per tornare al menù iniziale... ");
                 Console.ReadKey();
@@ -109,9 +149,9 @@
                 get { return _name; }
                 set
                 {
-                    if (value == null && value.Length == 0)
+                    if (value.Length == 0)
                     {
-                        throw new ArgumentException("Name cannot be Empty.");
+                        throw new ArgumentException("Il nome non può essere vuoto.");
                     }
                     _name = ToUpperFirstLetter(value);
                 }
@@ -124,7 +164,7 @@
                 {
                     if (value.Length == 0)
                     {
-                        throw new ArgumentException("Surname cannot be Empty.");
+                        throw new ArgumentException("Il cognome non può essere vuoto.");
                     }
                     _surname = ToUpperFirstLetter(value);
                 }
@@ -136,7 +176,10 @@
                 get { return _fiscalCode; }
                 set
                 {
-                    if (value.Length == 0 || !(value.Length == 16)) throw new ArgumentException("Fiscal Code must have 16 characters.");
+                    if (value.Length == 0 || !(value.Length == 16))
+                    {
+                        throw new ArgumentException("Il codice fiscale deve essere di 16 caratteri.");
+                    }
                     _fiscalCode = value.ToUpper();
                 }
             }
@@ -152,7 +195,7 @@
                     }
                     else
                     {
-                        throw new ArgumentException("Biological Sex must be [M]ale or [F]emale.");
+                        throw new ArgumentException("Il sesso biologico deve essere [M]aschio o [F]emmina.");
                     }
 
                 }
@@ -165,7 +208,7 @@
                 {
                     if (value.Length == 0)
                     {
-                        throw new ArgumentException("City of Residence cannot be Empty.");
+                        throw new ArgumentException("La città di residenza non può essere nulla.");
                     }
                     _cityOfResidence = ToUpperFirstLetter(value);
                 }
@@ -194,6 +237,8 @@
 
             void ApplyRate(double annualIncome)
             {
+                if (annualIncome < 0) throw new ArgumentException("Il tuo importo annuale non può essere nullo.");
+
                 if (annualIncome >= 75001)
                 {
                     _taxToBePaid = 25420 + ((annualIncome - 75000) * 0.43);
